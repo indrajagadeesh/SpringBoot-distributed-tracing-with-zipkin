@@ -26,16 +26,25 @@ public class ModuleController {
     private String name;
 
     @GetMapping("/module")
-    public String getCall(){
+    public String getCall() throws InterruptedException {
 
         String response = properties.getMessage();
         log.info("Application name {}",name);
-        if(properties.getNextCall()){
+        if(properties.isNextCall()){
             response = restTemplate.getForObject("http://"+properties.getHostName()+":"+properties.getPort(), String.class);
         }
         TimeUnit.MICROSECONDS.sleep(properties.getDelay());
+
+        if(properties.isMethod())
+            nextMethod();
+
         log.info("Application responce {}",response);
+
         return response;
+    }
+
+    void nextMethod(){
+        log.info("this is different method");
     }
 
     
