@@ -16,4 +16,6 @@ public class CustomProperties {
     private String port = "8080";
     private long delay = 0;
     private String message = "This is a test message";
+    private boolean method = false;
+
 }

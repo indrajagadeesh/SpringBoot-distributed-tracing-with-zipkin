@@ -34,8 +34,17 @@ public class ModuleController {
             response = restTemplate.getForObject("http://"+properties.getHostName()+":"+properties.getPort(), String.class);
         }
         TimeUnit.MICROSECONDS.sleep(properties.getDelay());
+
+        if(properties.isMethod())
+            nextMethod();
+
         log.info("Application responce {}",response);
+
         return response;
+    }
+
+    void nextMethod(){
+        log.info("this is different method");
     }
 
     
