@@ -14,6 +14,6 @@ public class CustomProperties {
     private boolean nextCall;
     private String hostName;
     private String port;  
-    private int delay = 0;
+    private long delay = 0;
     private String message = "This is a test message";
 }
