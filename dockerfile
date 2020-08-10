@@ -10,7 +10,6 @@ WORKDIR /opt/app
 RUN gradle build
 
 
-
 FROM openjdk:11.0.8-jre
 
 COPY --from=ship /opt/app/build/lib/*.jar /opt/app.jar
