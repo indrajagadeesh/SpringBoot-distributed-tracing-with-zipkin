@@ -1,11 +1,11 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.2.RELEASE'
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }
 
 group = 'com.indrajagadeesh'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '11'
 
 configurations {

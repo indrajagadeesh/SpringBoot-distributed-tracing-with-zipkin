@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import com.indrajagadeesh.TracingModule.Config.CustomProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/")
 @Slf4j
 public class ModuleController {
@@ -31,16 +33,18 @@ public class ModuleController {
         String response = properties.getMessage();
         log.info("Application name {}",name);
         if(properties.isNextCall()){
-            response = restTemplate.getForObject("http://"+properties.getHostName()+":"+properties.getPort(), String.class);
+            String url = "http://"+properties.getHostname()+":"+properties.getPort()+properties.getUrlPath();
+            log.info(url);
+            response = restTemplate.getForObject(url, String.class);
         }
         TimeUnit.MICROSECONDS.sleep(properties.getDelay());
 
-        if(properties.isMethod())
+        if(properties.isDelayMethod())
             nextMethod();
 
         log.info("Application responce {}",response);
 
-        return response;
+        return response + "current module name : "+name;
     }
 
     void nextMethod(){
