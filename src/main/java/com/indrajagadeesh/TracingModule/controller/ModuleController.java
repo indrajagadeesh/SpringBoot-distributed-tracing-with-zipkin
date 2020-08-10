@@ -37,18 +37,18 @@ public class ModuleController {
             log.info(url);
             response = restTemplate.getForObject(url, String.class);
         }
-        TimeUnit.MICROSECONDS.sleep(properties.getDelay());
 
         if(properties.isDelayMethod())
-            nextMethod();
+            delayMethod();
 
         log.info("Application responce {}",response);
 
-        return response + "current module name : "+name;
+        return response + " : current module name : "+name;
     }
 
-    void nextMethod(){
-        log.info("this is different method");
+    void delayMethod() throws InterruptedException {
+        log.info("this log is from delay method");
+        TimeUnit.MICROSECONDS.sleep(properties.getDelay());
     }
 
 }
