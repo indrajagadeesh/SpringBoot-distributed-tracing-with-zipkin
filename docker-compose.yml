@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  client-module:
+    image: indrajagadeesh/springboot_distributed_tracing:latest
+    environment:
+      - CUSTOM_NEXT_CALL=true
+      - CUSTOM_HOSTNAME=module-1
+      - CUSTOM_PORT=8080
+      - CUSTOM_DELAY=100
+      - CUSTOM_DELAY_METHOD=true
+      - SPRING_APPLICATION.NAME=client-module
+    ports:
+     - "9900:8080"
+
+  module-1:
+    image: indrajagadeesh/springboot_distributed_tracing:latest
+    environment:
+      - CUSTOM_NEXT_CALL=true
+      - CUSTOM_HOSTNAME=module-2
+      - CUSTOM_PORT=8080
+      - CUSTOM_DELAY=70
+      - CUSTOM_DELAY_METHOD=true
+      - SPRING_APPLICATION.NAME=module-1
+    ports:
+     - "9901:8080"
+
+  module-2:
+    image: indrajagadeesh/springboot_distributed_tracing:latest
+    environment:
+      - CUSTOM_NEXT_CALL=true
+      - CUSTOM_HOSTNAME=module-3
+      - CUSTOM_PORT=8080
+      - CUSTOM_DELAY=1000
+      - CUSTOM_DELAY_METHOD=true
+      - SPRING_APPLICATION.NAME=module-2
+    ports:
+     - "9902:8080"
+
+  module-3:
+    image: indrajagadeesh/springboot_distributed_tracing:latest
+    environment:
+      - CUSTOM_NEXT_CALL=false
+      - CUSTOM_DELAY_METHOD=false
+      - CUSTOM_MESSAGE="this message is from last module"
+      - SPRING_APPLICATION.NAME=module-3
+    ports:
+     - "9903:8080"

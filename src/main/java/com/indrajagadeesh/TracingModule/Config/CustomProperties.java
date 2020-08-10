@@ -12,10 +12,11 @@ import lombok.Setter;
 @Setter
 public class CustomProperties {
     private boolean nextCall = false;
-    private String hostName = "localhost";
+    private String hostname = "localhost";
     private String port = "8080";
+    private String urlPath = "/module";
     private long delay = 0;
     private String message = "This is a test message";
-    private boolean method = false;
+    private boolean delayMethod = false;
 
 }
