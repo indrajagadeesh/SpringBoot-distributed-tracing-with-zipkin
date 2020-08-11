@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 import com.indrajagadeesh.TracingModule.Config.CustomProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +30,19 @@ public class ModuleController {
     private String name;
 
     @GetMapping("/module")
-    public String getCall() throws InterruptedException {
+    public ResponseEntity<String> getCall() throws InterruptedException {
 
         String response = properties.getMessage();
         log.info("Application name {}",name);
         if(properties.isNextCall()){
-            String url = "http://"+properties.getHostname()+":"+properties.getPort()+properties.getUrlPath();
+            for(String url : properties.getUrls()){
             log.info(url);
-            response = restTemplate.getForObject(url, String.class);
+            try{
+            response += "<br>" + restTemplate.getForObject(url, String.class);
+            } catch ( Exception e){
+                response += e.getMessage();
+            }
+            }
         }
 
         if(properties.isDelayMethod())
@@ -43,7 +50,8 @@ public class ModuleController {
 
         log.info("Application responce {}",response);
 
-        return response + " : current module name : "+name;
+        return new ResponseEntity<>(response + " : current module name : "+name,
+                properties.isHttpStatusSuccess() ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     void delayMethod() throws InterruptedException {

@@ -5,43 +5,43 @@ services:
     image: indrajagadeesh/springboot_distributed_tracing:latest
     environment:
       - CUSTOM_NEXT_CALL=true
-      - CUSTOM_HOSTNAME=module-1
-      - CUSTOM_PORT=8081
+      - CUSTOM_URLS=http://module-1:8080/module,http://module-3:8080/module,http://module-error:8080/module
       - CUSTOM_DELAY=100
       - CUSTOM_DELAY_METHOD=true
       - SPRING_APPLICATION_NAME=client-module
       - SPRING_ZIPKIN_BASE_URL=http://zipkin:9411/
       - SPRING_ZIPKIN_ENABLED=true
+      - SERVER_PORT=8080
     ports:
-     - "9900:8081"
+     - "9900:8080"
 
   module-1:
     image: indrajagadeesh/springboot_distributed_tracing:latest
     environment:
       - CUSTOM_NEXT_CALL=true
-      - CUSTOM_HOSTNAME=module-2
-      - CUSTOM_PORT=8081
+      - CUSTOM_URLS=http://module-2:8080/module,http://module-3:8080/module
       - CUSTOM_DELAY=70
       - CUSTOM_DELAY_METHOD=true
       - SPRING_APPLICATION_NAME=module-1
       - SPRING_ZIPKIN_BASE_URL=http://zipkin:9411/
       - SPRING_ZIPKIN_ENABLED=true
+      - SERVER_PORT=8080
     ports:
-     - "9901:8081"
+     - "9901:8080"
 
   module-2:
     image: indrajagadeesh/springboot_distributed_tracing:latest
     environment:
       - CUSTOM_NEXT_CALL=true
-      - CUSTOM_HOSTNAME=module-3
-      - CUSTOM_PORT=8081
+      - CUSTOM_URLS=http://module-3:8080/module,http://module-error:8080/module
       - CUSTOM_DELAY=1000
       - CUSTOM_DELAY_METHOD=true
       - SPRING_APPLICATION_NAME=module-2
       - SPRING_ZIPKIN_BASE_URL=http://zipkin:9411/
       - SPRING_ZIPKIN_ENABLED=true
+      - SERVER_PORT=8080
     ports:
-     - "9902:8081"
+     - "9902:8080"
 
   module-3:
     image: indrajagadeesh/springboot_distributed_tracing:latest
@@ -52,8 +52,24 @@ services:
       - SPRING_APPLICATION_NAME=module-3
       - SPRING_ZIPKIN_BASE_URL=http://zipkin:9411/
       - SPRING_ZIPKIN_ENABLED=true
+      - SERVER_PORT=8080
     ports:
-     - "9903:8081"
+     - "9903:8080"
+
+  module-error:
+    image: indrajagadeesh/springboot_distributed_tracing:latest
+    environment:
+      - CUSTOM_NEXT_CALL=false
+      - CUSTOM_DELAY_METHOD=true
+      - CUSTOM_DELAY=1000
+      - CUSTOM_MESSAGE=this message is from error module
+      - SPRING_APPLICATION_NAME=module-error
+      - SPRING_ZIPKIN_BASE_URL=http://zipkin:9411/
+      - SPRING_ZIPKIN_ENABLED=true
+      - CUSTOM_HTTP_STATUS_SUCCESS=false
+      - SERVER_PORT=8080
+    ports:
+      - "9904:8080"
 
   zipkin:
     image: openzipkin/zipkin
