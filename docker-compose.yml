@@ -10,6 +10,8 @@ services:
       - CUSTOM_DELAY=100
       - CUSTOM_DELAY_METHOD=true
       - SPRING_APPLICATION_NAME=client-module
+      - SPRING_ZIPKIN_BASE_URL=zipkin:9411
+      - SPRING_ZIPKIN_ENABLED=true
     ports:
      - "9900:8081"
 
@@ -22,6 +24,8 @@ services:
       - CUSTOM_DELAY=70
       - CUSTOM_DELAY_METHOD=true
       - SPRING_APPLICATION_NAME=module-1
+      - SPRING_ZIPKIN_BASE_URL=zipkin:9411
+      - SPRING_ZIPKIN_ENABLED=true
     ports:
      - "9901:8081"
 
@@ -34,6 +38,8 @@ services:
       - CUSTOM_DELAY=1000
       - CUSTOM_DELAY_METHOD=true
       - SPRING_APPLICATION_NAME=module-2
+      - SPRING_ZIPKIN_BASE_URL=zipkin:9411
+      - SPRING_ZIPKIN_ENABLED=true
     ports:
      - "9902:8081"
 
@@ -44,5 +50,12 @@ services:
       - CUSTOM_DELAY_METHOD=false
       - CUSTOM_MESSAGE=this message is from last module
       - SPRING_APPLICATION_NAME=module-3
+      - SPRING_ZIPKIN_BASE_URL=zipkin:9411
+      - SPRING_ZIPKIN_ENABLED=true
     ports:
      - "9903:8081"
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+     - "9411:9411"
